@@ -57,6 +57,134 @@ docker build -t airgradient-exporter .
 docker run -e AIRGRADIENT_MONITORS="192.168.1.50" -p 9112:9112 airgradient-exporter
 ```
 
+### NixOS Module
+
+The package includes a NixOS module for easy integration into NixOS configurations.
+
+#### Using with Flakes
+
+Add the flake to your `flake.nix`:
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    airgradient-exporter.url = "github:zebradil/airgradient-exporter";
+  };
+
+  outputs = { self, nixpkgs, airgradient-exporter, ... }: {
+    nixosConfigurations.your-host = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        airgradient-exporter.nixosModules.default
+        {
+          services.airgradient-exporter = {
+            enable = true;
+            monitors = [ "192.168.1.50" "192.168.1.51" ];
+            port = 9112;
+            logFormat = "json";
+            # Optional: override package if needed
+            # package = airgradient-exporter.packages.x86_64-linux.default;
+          };
+        }
+      ];
+    };
+  };
+}
+```
+
+#### Using without Flakes
+
+Import the module in your `configuration.nix`:
+
+```nix
+{ config, pkgs, ... }:
+
+{
+  imports = [
+    /path/to/airgradient-exporter/nix/module.nix
+  ];
+
+  services.airgradient-exporter = {
+    enable = true;
+    monitors = [ "192.168.1.50" "192.168.1.51" ];
+    port = 9112;
+    logFormat = "json";
+  };
+}
+```
+
+The service will automatically start on boot when enabled. The `multi-user.target` ensures the service starts when the system reaches the normal multi-user state (standard boot).
+
+### Debian/Ubuntu Package Installation
+
+#### Installation
+
+1. Download the `.deb` package from the [releases page](https://github.com/zebradil/airgradient-exporter/releases)
+2. Install the package:
+
+```bash
+sudo dpkg -i airgradient-exporter_*.deb
+```
+
+The package installs:
+- Binary: `/usr/bin/airgradient-exporter`
+- Systemd unit: `/usr/lib/systemd/system/airgradient-exporter.service`
+
+#### Configuration
+
+The systemd unit file does not include environment variables by default. You need to configure them using a systemd override file.
+
+**Option 1: Using `systemctl edit` (Recommended)**
+
+```bash
+sudo systemctl edit airgradient-exporter
+```
+
+This opens an editor. Add the following configuration:
+
+```ini
+[Service]
+Environment="AIRGRADIENT_MONITORS=192.168.1.50,192.168.1.51"
+Environment="PORT=9112"
+Environment="LOG_FORMAT=json"
+```
+
+**Option 2: Manual override file**
+
+Create the override directory and file:
+
+```bash
+sudo mkdir -p /etc/systemd/system/airgradient-exporter.service.d
+sudo nano /etc/systemd/system/airgradient-exporter.service.d/override.conf
+```
+
+Add the same configuration as above, then reload systemd and restart the service:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart airgradient-exporter
+```
+
+**Enable and start the service:**
+
+```bash
+sudo systemctl enable airgradient-exporter
+sudo systemctl start airgradient-exporter
+```
+
+**Check service status:**
+
+```bash
+sudo systemctl status airgradient-exporter
+```
+
+**View logs:**
+
+```bash
+sudo journalctl -u airgradient-exporter -f
+```
+
 ## Metrics
 
 All metrics are prefixed with `airgradient_`.
