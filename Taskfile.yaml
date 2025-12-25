@@ -50,8 +50,3 @@ tasks:
     desc: Renders .gorleaser.yml from .goreleaser.ytt.yml
     cmds:
       - ytt -f .goreleaser.ytt.yml > .goreleaser.yml
-
-  docs:update-readme:
-    desc: Update the README.md file
-    cmds:
-      - scripts/update_readme README.md
