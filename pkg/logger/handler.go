@@ -10,6 +10,35 @@ import (
 	"golang.org/x/term"
 )
 
+// unbufferedWriter wraps an io.Writer and ensures immediate writes on newlines
+type unbufferedWriter struct {
+	file *os.File
+}
+
+func newUnbufferedWriter(w io.Writer) io.Writer {
+	if file, ok := w.(*os.File); ok {
+		return &unbufferedWriter{
+			file: file,
+		}
+	}
+	return w
+}
+
+func (w *unbufferedWriter) Write(p []byte) (n int, err error) {
+	n, err = w.file.Write(p)
+	if err != nil {
+		return n, err
+	}
+	// Only sync if the write contains a newline (for line-buffered behavior)
+	for i := 0; i < len(p); i++ {
+		if p[i] == '\n' {
+			w.file.Sync()
+			break
+		}
+	}
+	return n, nil
+}
+
 // ColoredTextHandler formats logs with custom formatting: time, colored level, bright msg, and attributes
 type ColoredTextHandler struct {
 	w     io.Writer
@@ -30,7 +59,7 @@ func NewColoredTextHandler(w io.Writer, opts *slog.HandlerOptions) *ColoredTextH
 
 func (h *ColoredTextHandler) Enabled(ctx context.Context, level slog.Level) bool {
 	minLevel := slog.LevelInfo
-	if h.opts.Level != nil {
+	if h.opts != nil && h.opts.Level != nil {
 		minLevel = h.opts.Level.Level()
 	}
 	return level >= minLevel
@@ -178,6 +207,9 @@ type PlainTextHandler struct {
 }
 
 func NewPlainTextHandler(w io.Writer, opts *slog.HandlerOptions) *PlainTextHandler {
+	if opts == nil {
+		opts = &slog.HandlerOptions{}
+	}
 	return &PlainTextHandler{
 		ColoredTextHandler: &ColoredTextHandler{
 			w:    w,
@@ -225,34 +257,35 @@ func (h *PlainTextHandler) Handle(ctx context.Context, r slog.Record) error {
 // NewLogger creates a logger based on the format and output
 func NewLogger(format string, output io.Writer) *slog.Logger {
 	var handler slog.Handler
+	writer := output
+
+	// Check if output is a terminal
+	isTerminal := false
+	if file, ok := output.(*os.File); ok {
+		isTerminal = term.IsTerminal(int(file.Fd()))
+		// For non-terminal (piped) output, use unbuffered writer to ensure immediate output
+		if !isTerminal {
+			writer = newUnbufferedWriter(output)
+		}
+	}
 
 	switch format {
 	case "json":
-		handler = slog.NewJSONHandler(output, nil)
+		handler = slog.NewJSONHandler(writer, nil)
 	case "text":
-		// Check if output is a terminal
-		if file, ok := output.(*os.File); ok {
-			if term.IsTerminal(int(file.Fd())) {
-				// Use colored handler for terminal
-				handler = NewColoredTextHandler(output, nil)
-			} else {
-				// Use plain text handler with same format for non-terminal
-				handler = NewPlainTextHandler(output, nil)
-			}
+		if isTerminal {
+			// Use colored handler for terminal
+			handler = NewColoredTextHandler(writer, nil)
 		} else {
-			// For non-file writers, use plain text with same format
-			handler = NewPlainTextHandler(output, nil)
+			// Use plain text handler with same format for non-terminal
+			handler = NewPlainTextHandler(writer, nil)
 		}
 	default:
 		// Default to text format
-		if file, ok := output.(*os.File); ok {
-			if term.IsTerminal(int(file.Fd())) {
-				handler = NewColoredTextHandler(output, nil)
-			} else {
-				handler = NewPlainTextHandler(output, nil)
-			}
+		if isTerminal {
+			handler = NewColoredTextHandler(writer, nil)
 		} else {
-			handler = NewPlainTextHandler(output, nil)
+			handler = NewPlainTextHandler(writer, nil)
 		}
 	}
 
