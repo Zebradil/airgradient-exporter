@@ -32,7 +32,7 @@ func (w *unbufferedWriter) Write(p []byte) (n int, err error) {
 	// Only sync if the write contains a newline (for line-buffered behavior)
 	for i := 0; i < len(p); i++ {
 		if p[i] == '\n' {
-			w.file.Sync()
+			_ = w.file.Sync()
 			break
 		}
 	}

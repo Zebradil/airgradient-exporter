@@ -85,13 +85,15 @@ func main() {
 
 	http.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{Registry: reg}))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(`<html>
+		if _, err := w.Write([]byte(`<html>
 			<head><title>AirGradient Exporter</title></head>
 			<body>
 			<h1>AirGradient Exporter</h1>
 			<p><a href="/metrics">Metrics</a></p>
 			</body>
-			</html>`))
+			</html>`)); err != nil {
+			log.Error("Failed to write response", "error", err)
+		}
 	})
 
 	port := os.Getenv("PORT")
