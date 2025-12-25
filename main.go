@@ -14,6 +14,16 @@ import (
 	"github.com/zebradil/airgradient-exporter/pkg/logger"
 )
 
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
+
+func printVersion() {
+	fmt.Printf("airgradient-exporter version %s (commit: %s, date: %s)\n", version, commit, date)
+}
+
 func printHelp() {
 	fmt.Println(`AirGradient Exporter - A Prometheus exporter for AirGradient monitors
 
@@ -21,7 +31,8 @@ Usage:
   airgradient-exporter [flags]
 
 Flags:
-  --help    Show this help message
+  --help     Show this help message
+  --version  Show version information
 
 Environment Variables:
   AIRGRADIENT_MONITORS    Comma-separated list of AirGradient monitor IPs, hostnames, or host:port (required)
@@ -44,10 +55,16 @@ Visit http://localhost:9112/metrics to see the metrics.`)
 
 func main() {
 	helpFlag := flag.Bool("help", false, "Show help message")
+	versionFlag := flag.Bool("version", false, "Show version information")
 	flag.Parse()
 
 	if *helpFlag {
 		printHelp()
+		os.Exit(0)
+	}
+
+	if *versionFlag {
+		printVersion()
 		os.Exit(0)
 	}
 

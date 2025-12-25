@@ -11,6 +11,11 @@ A Prometheus exporter for AirGradient monitors.
 
 ## Usage
 
+### Command Line Flags
+
+- `--help`: Show help message
+- `--version`: Show version information (version, commit, and build date)
+
 ### Configuration
 
 The exporter is configured via environment variables:
