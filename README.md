@@ -16,14 +16,21 @@ A Prometheus exporter for AirGradient monitors.
 The exporter is configured via environment variables:
 
 | Variable | Description | Default |
-|String |-------------|---------|
-| `AIRGRADIENT_MONITORS` | Comma-separated list of AirGradient monitor IPs or hostnames. | Required |
+|----------|-------------|---------|
+| `AIRGRADIENT_MONITORS` | Comma-separated list of AirGradient monitor IPs, hostnames, or host:port. | Required |
 | `PORT` | Port to listen on. | `9112` |
 
 ### Running Locally
 
 ```bash
 export AIRGRADIENT_MONITORS="192.168.1.50,192.168.1.51"
+go run ./cmd
+```
+
+You can also specify port numbers if your monitors are running on non-default ports:
+
+```bash
+export AIRGRADIENT_MONITORS="192.168.1.50:8080,192.168.1.51:8080"
 go run ./cmd
 ```
 

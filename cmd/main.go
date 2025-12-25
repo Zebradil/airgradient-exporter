@@ -24,7 +24,7 @@ Flags:
   --help    Show this help message
 
 Environment Variables:
-  AIRGRADIENT_MONITORS    Comma-separated list of AirGradient monitor IPs or hostnames (required)
+  AIRGRADIENT_MONITORS    Comma-separated list of AirGradient monitor IPs, hostnames, or host:port (required)
   PORT                    Port to listen on (default: 9112)
 
 Examples:
