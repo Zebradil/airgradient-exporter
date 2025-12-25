@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log/slog"
 	"net/http"
 	"os"
 	"strings"
@@ -12,6 +11,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/collectors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/zebradil/airgradient-exporter/pkg/collector"
+	"github.com/zebradil/airgradient-exporter/pkg/logger"
 )
 
 func printHelp() {
@@ -26,9 +26,13 @@ Flags:
 Environment Variables:
   AIRGRADIENT_MONITORS    Comma-separated list of AirGradient monitor IPs, hostnames, or host:port (required)
   PORT                    Port to listen on (default: 9112)
+  LOG_FORMAT              Log format: "text" or "json" (default: "text", colored when output is a terminal)
 
 Examples:
   export AIRGRADIENT_MONITORS="192.168.1.50,192.168.1.51"
+  airgradient-exporter
+
+  export AIRGRADIENT_MONITORS="192.168.1.50:8080,192.168.1.51:8080"
   airgradient-exporter
 
   export AIRGRADIENT_MONITORS="192.168.1.50"
@@ -47,11 +51,18 @@ func main() {
 		os.Exit(0)
 	}
 
-	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+	// Get log format from environment variable
+	logFormat := os.Getenv("LOG_FORMAT")
+	if logFormat == "" {
+		logFormat = "text"
+	}
+
+	// Create logger with configurable format
+	log := logger.NewLogger(logFormat, os.Stdout)
 
 	monitorsEnv := os.Getenv("AIRGRADIENT_MONITORS")
 	if monitorsEnv == "" {
-		logger.Error("AIRGRADIENT_MONITORS environment variable is required")
+		log.Error("AIRGRADIENT_MONITORS environment variable is required")
 		os.Exit(1)
 	}
 	hosts := strings.Split(monitorsEnv, ",")
@@ -59,7 +70,7 @@ func main() {
 		hosts[i] = strings.TrimSpace(hosts[i])
 	}
 
-	logger.Info("Starting airgradient-exporter", "monitors", hosts)
+	log.Info("Starting airgradient-exporter", "monitors", hosts)
 
 	// Create a new registry.
 	reg := prometheus.NewRegistry()
@@ -69,7 +80,7 @@ func main() {
 	reg.MustRegister(collectors.NewGoCollector())
 
 	// Create and register our collector
-	c := collector.NewAirGradientCollector(logger, hosts)
+	c := collector.NewAirGradientCollector(log, hosts)
 	reg.MustRegister(c)
 
 	http.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{Registry: reg}))
@@ -89,9 +100,9 @@ func main() {
 	}
 
 	addr := ":" + port
-	logger.Info("Listening on", "address", addr)
+	log.Info("Listening on", "address", addr)
 	if err := http.ListenAndServe(addr, nil); err != nil {
-		logger.Error("Server failed", "error", err)
+		log.Error("Server failed", "error", err)
 		os.Exit(1)
 	}
 }
