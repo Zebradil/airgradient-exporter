@@ -39,8 +39,8 @@ type Config struct {
 	AbcDays                         int         `json:"abcDays"`
 	TvocLearningOffset              int         `json:"tvocLearningOffset"`
 	NoxLearningOffset               int         `json:"noxLearningOffset"`
-	MqttBrokerUrl                   string      `json:"mqttBrokerUrl"`
-	HttpDomain                      string      `json:"httpDomain"`
+	MqttBrokerURL                   string      `json:"mqttBrokerUrl"`
+	HTTPDomain                      string      `json:"httpDomain"`
 	TemperatureUnit                 string      `json:"temperatureUnit"`
 	DisableCloudConnection          bool        `json:"disableCloudConnection"`
 	ConfigurationControl            string      `json:"configurationControl"`
@@ -58,6 +58,6 @@ type Corrections struct {
 }
 
 type ParamCorrection struct {
-	CorrectionAlgorithm string      `json:"correctionAlgorithm"`
-	Slr                 interface{} `json:"slr"` // value is null in example
+	CorrectionAlgorithm string `json:"correctionAlgorithm"`
+	Slr                 any    `json:"slr"` // value is null in example
 }

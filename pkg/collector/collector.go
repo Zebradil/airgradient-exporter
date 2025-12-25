@@ -65,127 +65,127 @@ func NewAirGradientCollector(logger *slog.Logger, hosts []string) *AirGradientCo
 		pm01: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "pm01"),
 			"PM1.0 (ug/m3)",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		pm02: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "pm02"),
 			"PM2.5 (ug/m3)",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		pm10: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "pm10"),
 			"PM10 (ug/m3)",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		pm01Standard: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "pm01_standard"),
 			"PM1.0 Standard (ug/m3)",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		pm02Standard: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "pm02_standard"),
 			"PM2.5 Standard (ug/m3)",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		pm10Standard: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "pm10_standard"),
 			"PM10 Standard (ug/m3)",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		pm003Count: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "pm003_count"),
 			"PM0.3 Count",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		pm005Count: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "pm005_count"),
 			"PM0.5 Count",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		pm01Count: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "pm01_count"),
 			"PM1.0 Count",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		pm02Count: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "pm02_count"),
 			"PM2.5 Count",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		pm50Count: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "pm50_count"),
 			"PM5.0 Count",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		pm10Count: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "pm10_count"),
 			"PM10 Count",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		pm02Compensated: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "pm02_compensated"),
 			"PM2.5 Compensated (ug/m3)",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		atmp: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "atmp"),
 			"Ambient Temperature (Celsius)",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		atmpCompensated: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "atmp_compensated"),
 			"Ambient Temperature Compensated (Celsius)",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		rhum: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "rhum"),
 			"Relative Humidity (%)",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		rhumCompensated: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "rhum_compensated"),
 			"Relative Humidity Compensated (%)",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		rco2: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "rco2"),
 			"CO2 (ppm)",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		tvocIndex: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "tvoc_index"),
 			"TVOC Index",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		tvocRaw: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "tvoc_raw"),
 			"TVOC Raw",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		noxIndex: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "nox_index"),
 			"NOx Index",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		noxRaw: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "nox_raw"),
 			"NOx Raw",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		boot: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "boot_uptime_raw"),
 			"Boot uptime raw value",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		bootCount: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "boot_count"),
 			"Boot Count",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		wifi: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "wifi_signal_dbm"),
 			"WiFi Signal (dBm)",
-			[]string{"host", "serialno", "model", "firmware"}, nil,
+			[]string{"host", "serialno", "firmware"}, nil,
 		),
 		displayBrightness: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "config_display_brightness"),
@@ -267,7 +267,7 @@ func (c *AirGradientCollector) scrape(ctx context.Context, host string, ch chan<
 	}
 	ch <- prometheus.MustNewConstMetric(c.up, prometheus.GaugeValue, 1, host)
 
-	labels := []string{host, measures.SerialNo, measures.Model, measures.Firmware}
+	labels := []string{host, measures.SerialNo, measures.Firmware}
 
 	ch <- prometheus.MustNewConstMetric(c.pm01, prometheus.GaugeValue, measures.Pm01, labels...)
 	ch <- prometheus.MustNewConstMetric(c.pm02, prometheus.GaugeValue, measures.Pm02, labels...)
