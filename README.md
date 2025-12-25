@@ -25,14 +25,14 @@ The exporter is configured via environment variables:
 
 ```bash
 export AIRGRADIENT_MONITORS="192.168.1.50,192.168.1.51"
-go run ./cmd/airgradient-exporter
+go run .
 ```
 
 You can also specify port numbers if your monitors are running on non-default ports:
 
 ```bash
 export AIRGRADIENT_MONITORS="192.168.1.50:8080,192.168.1.51:8080"
-go run ./cmd/airgradient-exporter
+go run .
 ```
 
 To use JSON logging format:
@@ -40,7 +40,7 @@ To use JSON logging format:
 ```bash
 export AIRGRADIENT_MONITORS="192.168.1.50"
 export LOG_FORMAT="json"
-go run ./cmd/airgradient-exporter
+go run .
 ```
 
 Visit `http://localhost:9112/metrics` to see the metrics.

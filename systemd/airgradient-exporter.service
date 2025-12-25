@@ -1,0 +1,10 @@
+[Unit]
+Description=Prometheus exporter for AirGradient air quality sensors
+Documentation=https://github.com/Zebradil/airgradient-exporter/blob/master/README.md
+Wants=network-online.target
+After=network-online.target nss-lookup.target
+
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/airgradient-exporter

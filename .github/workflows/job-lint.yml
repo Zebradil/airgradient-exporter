@@ -1,0 +1,38 @@
+---
+name: Lint Job
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version-file: ./go.mod
+          cache: false
+      - name: Install gofumpt
+        uses: jaxxstorm/action-install-gh-release@6096f2a2bbfee498ced520b6922ac2c06e990ed2 # v2.1.0
+        with:
+          repo: mvdan/gofumpt
+          tag: v0.9.2
+          cache: enable
+          extension-matching: nah
+          rename-to: gofumpt
+          chmod: 0700
+      - name: Check code formatting
+        run: |
+          set -euo pipefail
+          gofumpt -l $( \
+              git diff-tree -r --no-commit-id --name-only --diff-filter=ACMRT \
+                "origin/$GITHUB_BASE_REF..origin/$GITHUB_HEAD_REF" \
+              | grep '\.go$' \
+            ) \
+            | tee /dev/stderr \
+            | test $(wc -l) -eq 0
+      - uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0

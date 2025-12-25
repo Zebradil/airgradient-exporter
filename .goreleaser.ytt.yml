@@ -1,0 +1,134 @@
+#@ project_name = 'airgradient-exporter'
+#@ description = 'Prometheus exporter for AirGradient air quality sensors'
+#@ maintainer = 'German Lashevich <german.lashevich@gmail.com>'
+#@ url = 'https://github.com/zebradil/airgradient-exporter'
+#@ committer_name = 'Zebradil Bot'
+#@ committer_email = 'german.lashevich+github-zebradil-bot@gmail.com'
+#@ targets = [
+#@   ("linux", "amd64", ""),
+#@   ("linux", "arm64", ""),
+#@ ]
+#@ docker_targets = [
+#@   ("linux", "amd64", ""),
+#@   ("linux", "arm64", ""),
+#@ ]
+#@ versions = [
+#@   '{{ .Tag }}',
+#@   '{{ .Major }}',
+#@   '{{ .Major }}.{{ .Minor }}',
+#@   'latest',
+#@ ]
+
+#@ base_image = 'ghcr.io/zebradil/' + project_name
+
+#@ def make_target(os, arch, arm):
+#@   target = os + "_" + arch
+#@   if arm:
+#@     target += "_" + arm
+#@   end
+#@   return target
+#@ end
+
+#@ def make_image(version, os, arch, arm):
+#@   image = base_image + ":" + version + "-" + os + "-" + arch
+#@   if arm:
+#@     image += "-" + arm
+#@   end
+#@   return image
+#@ end
+
+#@ def make_platform(os, arch, arm):
+#@   platform = "--platform=" + os + "/" + arch
+#@   if arm:
+#@     platform += "/" + arm
+#@   end
+#@   return platform
+#@ end
+
+---
+version: 2
+project_name: #@ project_name
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - binary: #@ project_name
+    env:
+      - CGO_ENABLED=0
+    targets:
+      #@ for/end os, arch, arm in targets:
+      -  #@ make_target(os, arch, arm)
+archives:
+  - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
+      - systemd/*
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: '{{ incpatch .Version }}-next'
+#! Disable AUR section for now
+#! Update the package content script when re-enabling
+#@ if/end False:
+aurs:
+  - name: #@ project_name + "-bin"
+    homepage: #@ url
+    description: #@ description
+    maintainers:
+      -  #@ maintainer
+    license: 'MIT'
+    private_key: '{{ .Env.AUR_SSH_KEY }}'
+    git_url: #@ "ssh://aur@aur.archlinux.org/{}-bin.git".format(project_name)
+    #@yaml/text-templated-strings
+    package: |-
+      BIN=(@= project_name @)
+
+      install -Dm755 ./$BIN -t "${pkgdir}/usr/bin"
+      install -Dm644 systemd/* -t "$pkgdir"/usr/lib/systemd/system
+      install -m700 -d "$pkgdir"/etc/airgradient-exporter/config.d
+
+      # completions
+      mkdir -p "${pkgdir}/usr/share/bash-completion/completions/"
+      mkdir -p "${pkgdir}/usr/share/zsh/site-functions/"
+      mkdir -p "${pkgdir}/usr/share/fish/vendor_completions.d/"
+      ./$BIN completion bash | install -Dm644 /dev/stdin "${pkgdir}/usr/share/bash-completion/completions/$BIN"
+      ./$BIN completion fish | install -Dm644 /dev/stdin "${pkgdir}/usr/share/fish/vendor_completions.d/$BIN.fish"
+      ./$BIN completion zsh  | install -Dm644 /dev/stdin "${pkgdir}/usr/share/zsh/site-functions/_$BIN"
+    commit_author:
+      name: #@ committer_name
+      email: #@ committer_email
+nfpms:
+  - vendor: Zebradil
+    homepage: #@ url
+    maintainer: #@ maintainer
+    description: #@ description
+    license: MIT
+    formats:
+      - apk
+      - deb
+      - rpm
+    contents:
+      - src: systemd/
+        dst: /usr/lib/systemd/system/
+dockers:
+  #@ for/end os, arch, arm in docker_targets:
+  - goos: #@ os
+    goarch: #@ arch
+    #@ if/end arm:
+    goarm: #@ arm
+    image_templates:
+      #@ for/end version in versions:
+      -  #@ make_image(version, os, arch, arm)
+    use: buildx
+    build_flag_templates:
+      -  #@ make_platform(os, arch, arm)
+docker_manifests:
+  #@ for/end version in versions:
+  - name_template: #@ base_image + ":" + version
+    image_templates:
+      #@ for/end os, arch, arm in docker_targets:
+      -  #@ make_image(version, os, arch, arm)
