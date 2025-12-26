@@ -5,6 +5,7 @@ pkgs.mkShell {
   packages = (
     with pkgs;
     [
+      commitlint
       go
       go-task
       gofumpt

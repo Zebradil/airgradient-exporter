@@ -256,8 +256,16 @@ func TestUnbufferedWriter_Write(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create temp file: %v", err)
 	}
-	defer os.Remove(tmpfile.Name())
-	defer tmpfile.Close()
+	defer func() {
+		if err := os.Remove(tmpfile.Name()); err != nil {
+			t.Errorf("Failed to remove temp file: %v", err)
+		}
+	}()
+	defer func() {
+		if err := tmpfile.Close(); err != nil {
+			t.Errorf("Failed to close temp file: %v", err)
+		}
+	}()
 
 	writer := newUnbufferedWriter(tmpfile)
 	if writer == nil {

@@ -41,14 +41,18 @@ func TestPrintHelp(t *testing.T) {
 	var output string
 	go func() {
 		var buf bytes.Buffer
-		buf.ReadFrom(r)
+		if _, err := buf.ReadFrom(r); err != nil {
+			t.Errorf("Failed to read from pipe: %v", err)
+		}
 		output = buf.String()
 		done <- true
 	}()
 
 	printHelp()
 
-	w.Close()
+	if err := w.Close(); err != nil {
+		t.Errorf("Failed to close pipe writer: %v", err)
+	}
 	os.Stdout = oldStdout
 	<-done
 

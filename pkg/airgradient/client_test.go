@@ -47,7 +47,9 @@ func TestClient_GetMeasures_Success(t *testing.T) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(expectedMeasures)
+		if err := json.NewEncoder(w).Encode(expectedMeasures); err != nil {
+			t.Errorf("Failed to encode measures: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -93,7 +95,9 @@ func TestClient_GetMeasures_InvalidJSON(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("invalid json"))
+		if _, err := w.Write([]byte("invalid json")); err != nil {
+			t.Errorf("Failed to write response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -176,7 +180,9 @@ func TestClient_GetConfig_Success(t *testing.T) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(expectedConfig)
+		if err := json.NewEncoder(w).Encode(expectedConfig); err != nil {
+			t.Errorf("Failed to encode config: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -225,7 +231,9 @@ func TestClient_GetConfig_InvalidJSON(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("invalid json"))
+		if _, err := w.Write([]byte("invalid json")); err != nil {
+			t.Errorf("Failed to write response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -257,7 +265,9 @@ func TestClient_GetConfig_WithCorrections(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(expectedConfig)
+		if err := json.NewEncoder(w).Encode(expectedConfig); err != nil {
+			t.Errorf("Failed to encode config: %v", err)
+		}
 	}))
 	defer server.Close()
 

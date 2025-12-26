@@ -94,11 +94,16 @@ func TestAirGradientCollector_Collect_Success(t *testing.T) {
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		if r.URL.Path == "/measures/current" {
-			json.NewEncoder(w).Encode(expectedMeasures)
-		} else if r.URL.Path == "/config" {
-			json.NewEncoder(w).Encode(expectedConfig)
-		} else {
+		switch r.URL.Path {
+		case "/measures/current":
+			if err := json.NewEncoder(w).Encode(expectedMeasures); err != nil {
+				t.Errorf("Failed to encode measures: %v", err)
+			}
+		case "/config":
+			if err := json.NewEncoder(w).Encode(expectedConfig); err != nil {
+				t.Errorf("Failed to encode config: %v", err)
+			}
+		default:
 			w.WriteHeader(http.StatusNotFound)
 		}
 	}))
@@ -196,9 +201,12 @@ func TestAirGradientCollector_Collect_ConfigError(t *testing.T) {
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		if r.URL.Path == "/measures/current" {
-			json.NewEncoder(w).Encode(expectedMeasures)
-		} else if r.URL.Path == "/config" {
+		switch r.URL.Path {
+		case "/measures/current":
+			if err := json.NewEncoder(w).Encode(expectedMeasures); err != nil {
+				t.Errorf("Failed to encode measures: %v", err)
+			}
+		case "/config":
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 	}))
@@ -227,34 +235,44 @@ func TestAirGradientCollector_Collect_ConfigError(t *testing.T) {
 func TestAirGradientCollector_Collect_MultipleHosts(t *testing.T) {
 	server1 := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		if r.URL.Path == "/measures/current" {
-			json.NewEncoder(w).Encode(&airgradient.Measures{
+		switch r.URL.Path {
+		case "/measures/current":
+			if err := json.NewEncoder(w).Encode(&airgradient.Measures{
 				Pm01:     10.5,
 				SerialNo: "TEST1",
 				Firmware: "1.0.0",
 				Model:    "TEST",
-			})
-		} else if r.URL.Path == "/config" {
-			json.NewEncoder(w).Encode(&airgradient.Config{
+			}); err != nil {
+				t.Errorf("Failed to encode measures: %v", err)
+			}
+		case "/config":
+			if err := json.NewEncoder(w).Encode(&airgradient.Config{
 				Model: "TEST",
-			})
+			}); err != nil {
+				t.Errorf("Failed to encode config: %v", err)
+			}
 		}
 	}))
 	defer server1.Close()
 
 	server2 := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		if r.URL.Path == "/measures/current" {
-			json.NewEncoder(w).Encode(&airgradient.Measures{
+		switch r.URL.Path {
+		case "/measures/current":
+			if err := json.NewEncoder(w).Encode(&airgradient.Measures{
 				Pm01:     20.5,
 				SerialNo: "TEST2",
 				Firmware: "1.0.0",
 				Model:    "TEST",
-			})
-		} else if r.URL.Path == "/config" {
-			json.NewEncoder(w).Encode(&airgradient.Config{
+			}); err != nil {
+				t.Errorf("Failed to encode measures: %v", err)
+			}
+		case "/config":
+			if err := json.NewEncoder(w).Encode(&airgradient.Config{
 				Model: "TEST",
-			})
+			}); err != nil {
+				t.Errorf("Failed to encode config: %v", err)
+			}
 		}
 	}))
 	defer server2.Close()
