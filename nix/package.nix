@@ -10,7 +10,7 @@ let
     ../pkg
     ../main.go
   ];
-  baseVersion = "1.0.2";
+  baseVersion = "1.0.3";
   commit = self.shortRev or self.dirtyShortRev or "unknown";
   version = "${baseVersion}-${commit}";
   name = "airgradient-exporter";

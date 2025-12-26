@@ -71,9 +71,9 @@ checksum:
   name_template: 'checksums.txt'
 snapshot:
   name_template: '{{ incpatch .Version }}-next'
-#! Disable extra sections for now
+#! Disable AUR section for now
 #! Update the package content script when re-enabling
-#@ if False:
+#@ if/end False:
 aurs:
   - name: #@ project_name + "-bin"
     homepage: #@ url
@@ -132,4 +132,3 @@ docker_manifests:
     image_templates:
       #@ for/end os, arch, arm in docker_targets:
       -  #@ make_image(version, os, arch, arm)
-#@ end
