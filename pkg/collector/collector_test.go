@@ -278,5 +278,3 @@ func TestAirGradientCollector_Collect_MultipleHosts(t *testing.T) {
 		t.Errorf("Collect() sent %d metrics, want at least %d", len(metrics), expectedMetricCount)
 	}
 }
-
-
