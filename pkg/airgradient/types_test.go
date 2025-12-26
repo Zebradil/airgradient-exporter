@@ -155,4 +155,3 @@ func TestMeasures_UnmarshalJSON_Minimal(t *testing.T) {
 		t.Errorf("Pm01 = %v, want 0", measures.Pm01)
 	}
 }
-

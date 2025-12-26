@@ -74,4 +74,3 @@ func TestMain_HelpFlag(t *testing.T) {
 	// This is a basic smoke test - we can't easily test main() directly
 	// without refactoring, but we can test the helper functions
 }
-

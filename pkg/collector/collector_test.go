@@ -10,6 +10,7 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 	dto "github.com/prometheus/client_model/go"
+
 	"github.com/zebradil/airgradient-exporter/pkg/airgradient"
 )
 
@@ -57,28 +58,28 @@ func TestAirGradientCollector_Collect_Success(t *testing.T) {
 		Pm01Standard:    11.0,
 		Pm02Standard:    16.0,
 		Pm10Standard:    21.0,
-		Pm003Count:       1000.0,
-		Pm005Count:       2000.0,
-		Pm01Count:        3000.0,
-		Pm02Count:        4000.0,
-		Pm50Count:        5000.0,
-		Pm10Count:        6000.0,
-		Pm02Compensated:  15.5,
-		Atmp:             22.5,
-		AtmpCompensated:  22.7,
-		Rhum:             45.0,
-		RhumCompensated:  45.2,
-		Rco2:             420,
-		TvocIndex:        100,
-		TvocRaw:          200,
-		NoxIndex:         50,
-		NoxRaw:           150,
-		Boot:             12345,
-		BootCount:        5,
-		Wifi:             -65,
-		SerialNo:         "TEST123",
-		Firmware:         "1.0.0",
-		Model:            "TEST",
+		Pm003Count:      1000.0,
+		Pm005Count:      2000.0,
+		Pm01Count:       3000.0,
+		Pm02Count:       4000.0,
+		Pm50Count:       5000.0,
+		Pm10Count:       6000.0,
+		Pm02Compensated: 15.5,
+		Atmp:            22.5,
+		AtmpCompensated: 22.7,
+		Rhum:            45.0,
+		RhumCompensated: 45.2,
+		Rco2:            420,
+		TvocIndex:       100,
+		TvocRaw:         200,
+		NoxIndex:        50,
+		NoxRaw:          150,
+		Boot:            12345,
+		BootCount:       5,
+		Wifi:            -65,
+		SerialNo:        "TEST123",
+		Firmware:        "1.0.0",
+		Model:           "TEST",
 	}
 
 	expectedConfig := &airgradient.Config{

@@ -24,18 +24,18 @@ func TestNewClient(t *testing.T) {
 
 func TestClient_GetMeasures_Success(t *testing.T) {
 	expectedMeasures := &Measures{
-		Pm01:            10.5,
-		Pm02:            15.3,
-		Pm10:            20.1,
-		Atmp:            22.5,
-		Rhum:            45.0,
-		Rco2:            420,
-		SerialNo:        "TEST123",
-		Firmware:        "1.0.0",
-		Model:           "TEST",
-		Boot:            12345,
-		BootCount:       5,
-		Wifi:            -65,
+		Pm01:      10.5,
+		Pm02:      15.3,
+		Pm10:      20.1,
+		Atmp:      22.5,
+		Rhum:      45.0,
+		Rco2:      420,
+		SerialNo:  "TEST123",
+		Firmware:  "1.0.0",
+		Model:     "TEST",
+		Boot:      12345,
+		BootCount: 5,
+		Wifi:      -65,
 	}
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -155,16 +155,16 @@ func TestClient_GetMeasures_ContextCancellation(t *testing.T) {
 
 func TestClient_GetConfig_Success(t *testing.T) {
 	expectedConfig := &Config{
-		Country:            "US",
-		PmStandard:         "EPA",
-		LedBarMode:         "auto",
-		TemperatureUnit:    "C",
-		Model:              "TEST",
-		DisplayBrightness:  80,
-		LedBarBrightness:   50,
-		AbcDays:            7,
+		Country:                "US",
+		PmStandard:             "EPA",
+		LedBarMode:             "auto",
+		TemperatureUnit:        "C",
+		Model:                  "TEST",
+		DisplayBrightness:      80,
+		LedBarBrightness:       50,
+		AbcDays:                7,
 		DisableCloudConnection: false,
-		PostDataToAirGradient: true,
+		PostDataToAirGradient:  true,
 	}
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -273,4 +273,3 @@ func TestClient_GetConfig_WithCorrections(t *testing.T) {
 		t.Errorf("CorrectionAlgorithm = %v, want slr", config.Corrections.Pm02.CorrectionAlgorithm)
 	}
 }
-
