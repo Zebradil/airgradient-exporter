@@ -69,7 +69,7 @@ Add the flake to your `flake.nix`:
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    airgradient-exporter.url = "github:zebradil/airgradient-exporter";
+    airgradient-exporter.url = "github:Zebradil/airgradient-exporter";
   };
 
   outputs = { self, nixpkgs, airgradient-exporter, ... }: {
@@ -120,7 +120,7 @@ The service will automatically start on boot when enabled. The `multi-user.targe
 
 #### Installation
 
-1. Download the `.deb` package from the [releases page](https://github.com/zebradil/airgradient-exporter/releases)
+1. Download the `.deb` package from the [releases page](https://github.com/Zebradil/airgradient-exporter/releases)
 2. Install the package:
 
 ```bash

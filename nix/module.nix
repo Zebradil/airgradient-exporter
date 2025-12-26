@@ -39,7 +39,7 @@ in
     package = mkOption {
       type = types.package;
       default =
-        pkgs.airgradient-exporter or (import ../nix/package.nix {
+        pkgs.airgradient-exporter or (import ./package.nix {
           inherit pkgs;
           self = {
             shortRev = "unknown";
