@@ -38,10 +38,10 @@ jobs:
         uses: cycjimmy/semantic-release-action@b12c8f6015dc215fe37bc154d4ad456dd3833c90 # v6.0.0
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-          GIT_AUTHOR_NAME: zebradilbot[bot]
-          GIT_AUTHOR_EMAIL: zebradilbot[bot]@users.noreply.github.com
-          GIT_COMMITTER_NAME: zebradilbot[bot]
-          GIT_COMMITTER_EMAIL: zebradilbot[bot]@users.noreply.github.com
+          GIT_AUTHOR_NAME: zebradil[bot]
+          GIT_AUTHOR_EMAIL: zebradil[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: zebradil[bot]
+          GIT_COMMITTER_EMAIL: zebradil[bot]@users.noreply.github.com
         with:
           extra_plugins: |
             @semantic-release/exec

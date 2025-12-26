@@ -14,7 +14,8 @@ archives:
 - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
   format_overrides:
   - goos: windows
-    format: zip
+    formats:
+    - zip
   files:
   - LICENSE
   - README.md
@@ -22,7 +23,7 @@ archives:
 checksum:
   name_template: checksums.txt
 snapshot:
-  name_template: '{{ incpatch .Version }}-next'
+  version_template: '{{ incpatch .Version }}-next'
 nfpms:
 - vendor: Zebradil
   homepage: https://github.com/zebradil/airgradient-exporter
@@ -34,8 +35,10 @@ nfpms:
   - deb
   - rpm
   contents:
-  - src: systemd/
-    dst: /usr/lib/systemd/system/
+  - src: systemd/airgradient-exporter.service
+    dst: /usr/lib/systemd/system/airgradient-exporter.service
+  - src: systemd/override.conf.example
+    dst: /usr/share/doc/airgradient-exporter/override.conf.example
 dockers:
 - goos: linux
   goarch: amd64

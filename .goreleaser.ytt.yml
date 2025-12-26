@@ -62,7 +62,7 @@ archives:
   - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
     format_overrides:
       - goos: windows
-        format: zip
+        formats: [zip]
     files:
       - LICENSE
       - README.md
@@ -70,7 +70,7 @@ archives:
 checksum:
   name_template: 'checksums.txt'
 snapshot:
-  name_template: '{{ incpatch .Version }}-next'
+  version_template: '{{ incpatch .Version }}-next'
 #! Disable AUR section for now
 #! Update the package content script when re-enabling
 #@ if/end False:
@@ -89,7 +89,7 @@ aurs:
 
       install -Dm755 ./$BIN -t "${pkgdir}/usr/bin"
       install -Dm644 systemd/* -t "$pkgdir"/usr/lib/systemd/system
-      install -m700 -d "$pkgdir"/etc/airgradient-exporter/config.d
+      install -m700 -d "$pkgdir"/etc/(@= project_name @)/config.d
 
       # completions
       mkdir -p "${pkgdir}/usr/share/bash-completion/completions/"
@@ -111,9 +111,12 @@ nfpms:
       - apk
       - deb
       - rpm
+    #@yaml/text-templated-strings
     contents:
-      - src: systemd/
-        dst: /usr/lib/systemd/system/
+      - src: systemd/(@= project_name @).service
+        dst: /usr/lib/systemd/system/(@= project_name @).service
+      - src: systemd/override.conf.example
+        dst: /usr/share/doc/(@= project_name @)/override.conf.example
 dockers:
   #@ for/end os, arch, arm in docker_targets:
   - goos: #@ os

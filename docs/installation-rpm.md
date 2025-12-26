@@ -1,12 +1,20 @@
-# Debian/Ubuntu Package Installation
+# RPM Package Installation
 
 ## Installation
 
-1. Download the `.deb` package from the [releases page](https://github.com/Zebradil/airgradient-exporter/releases)
+1. Download the `.rpm` package from the [releases page](https://github.com/Zebradil/airgradient-exporter/releases)
 2. Install the package:
 
 ```bash
-sudo dpkg -i airgradient-exporter_*.deb
+sudo rpm -i airgradient-exporter_*.rpm
+```
+
+Or on systems with `yum` or `dnf`:
+
+```bash
+sudo yum install airgradient-exporter_*.rpm
+# or
+sudo dnf install airgradient-exporter_*.rpm
 ```
 
 The package installs:
@@ -45,6 +53,11 @@ sudo nano /etc/systemd/system/airgradient-exporter.service.d/override.conf
 
 Edit the file with your actual configuration, then reload systemd and restart the service:
 
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart airgradient-exporter
+```
+
 ### Option 3: Manual override file
 
 Create the override directory and file:
@@ -54,7 +67,16 @@ sudo mkdir -p /etc/systemd/system/airgradient-exporter.service.d
 sudo nano /etc/systemd/system/airgradient-exporter.service.d/override.conf
 ```
 
-Add the same configuration as above, then reload systemd and restart the service:
+Add the configuration:
+
+```ini
+[Service]
+Environment="AIRGRADIENT_MONITORS=192.168.1.50,192.168.1.51"
+Environment="PORT=9112"
+Environment="LOG_FORMAT=json"
+```
+
+Then reload systemd and restart the service:
 
 ```bash
 sudo systemctl daemon-reload
@@ -91,3 +113,4 @@ The exporter is configured via environment variables:
 | `AIRGRADIENT_MONITORS` | Comma-separated list of AirGradient monitor IPs, hostnames, or host:port.       | Required |
 | `PORT`                 | Port to listen on.                                                              | `9112`   |
 | `LOG_FORMAT`           | Log format: "text" or "json". Text format is colored when output is a terminal. | `text`   |
+
