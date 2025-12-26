@@ -6,10 +6,16 @@ on:
     branches:
       - main
     paths:
-      - 'main.go'
+      - '.github/scripts/**'
+      - '.github/workflows/flow-pr.yml'
+      - '.github/workflows/job-*.yml'
+      - '.goreleaser.yml'
+      - 'flake.lock'
+      - 'flake.nix'
       - 'go.mod'
       - 'go.sum'
-      - '.goreleaser.yml'
+      - 'main.go'
+      - 'nix/**'
       - 'pkg/**'
 
 jobs:

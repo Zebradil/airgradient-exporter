@@ -4,7 +4,11 @@ Documentation=https://github.com/Zebradil/airgradient-exporter/blob/master/READM
 Wants=network-online.target
 After=network-online.target nss-lookup.target
 
-
 [Service]
 Type=simple
 ExecStart=/usr/bin/airgradient-exporter
+Restart=on-failure
+RestartSec=5s
+# Environment variables should be configured via NixOS module or systemd override
+# Required: AIRGRADIENT_MONITORS
+# Optional: PORT (default: 9112), LOG_FORMAT (default: text)

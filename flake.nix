@@ -27,5 +27,9 @@
 
         devShells.default = import ./nix/shell.nix { inherit pkgs; };
       }
-    );
+    )
+    // {
+      nixosModules.default = import ./nix/module.nix;
+      nixosModules.airgradient-exporter = import ./nix/module.nix;
+    };
 }

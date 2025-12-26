@@ -38,4 +38,10 @@ pkgs.buildGoModule {
     homepage = "https://github.com/Zebradil/${name}";
     license = pkgs.lib.licenses.mit;
   };
+
+  # Include systemd unit file in the package
+  postInstall = ''
+    mkdir -p $out/lib/systemd/system
+    cp ${../systemd/airgradient-exporter.service} $out/lib/systemd/system/airgradient-exporter.service
+  '';
 }
