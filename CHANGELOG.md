@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/Zebradil/airgradient-exporter/compare/1.0.0...1.0.1) (2025-12-26)
+
+
+### Bug Fixes
+
+* use noreply email for zebradilbot in flow-release.yml ([080ea3e](https://github.com/Zebradil/airgradient-exporter/commit/080ea3ed9b999685fc63b90fd85943e189570249))
+
 # 1.0.0 (2025-12-26)
 
 
