@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/Zebradil/airgradient-exporter/compare/1.0.2...1.0.3) (2025-12-26)
+
+
+### Bug Fixes
+
+* use GITHUB_TOKEN instead of GitHub App token for package publishing ([f85f982](https://github.com/Zebradil/airgradient-exporter/commit/f85f982fbb49d67e3afb02d44b4470141adec05d))
+
 ## [1.0.2](https://github.com/Zebradil/airgradient-exporter/compare/1.0.1...1.0.2) (2025-12-26)
 
 
