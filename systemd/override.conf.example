@@ -1,0 +1,24 @@
+# Example systemd override file for airgradient-exporter
+#
+# To use this file:
+# 1. Copy it to /etc/systemd/system/airgradient-exporter.service.d/override.conf
+#    sudo mkdir -p /etc/systemd/system/airgradient-exporter.service.d
+#    sudo cp /usr/share/doc/airgradient-exporter/override.conf.example /etc/systemd/system/airgradient-exporter.service.d/override.conf
+# 2. Edit the file with your actual configuration:
+#    sudo nano /etc/systemd/system/airgradient-exporter.service.d/override.conf
+# 3. Reload systemd and restart the service:
+#    sudo systemctl daemon-reload
+#    sudo systemctl restart airgradient-exporter
+#
+# Alternatively, use: sudo systemctl edit airgradient-exporter
+
+[Service]
+# Required: Comma-separated list of AirGradient monitor IPs, hostnames, or host:port
+Environment="AIRGRADIENT_MONITORS=192.168.1.50,192.168.1.51"
+
+# Optional: Port to listen on (default: 9112)
+Environment="PORT=9112"
+
+# Optional: Log format - "text" or "json" (default: text)
+Environment="LOG_FORMAT=json"
+

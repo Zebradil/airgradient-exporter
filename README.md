@@ -34,6 +34,8 @@ Choose the method that best fits your environment:
 - **[Docker](docs/docker.md)** - Run using Docker containers
 - **[NixOS](docs/nixos.md)** - Install and configure with NixOS module
 - **[Debian/Ubuntu](docs/installation-debian-ubuntu.md)** - Install using `.deb` packages
+- **[RPM](docs/installation-rpm.md)** - Install using `.rpm` packages (RHEL, CentOS, Fedora, etc.)
+- **[APK](docs/installation-apk.md)** - Install using `.apk` packages (Alpine Linux)
 
 ## Metrics
 

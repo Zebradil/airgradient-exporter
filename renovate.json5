@@ -7,8 +7,9 @@
   ],
   // Rebase PRs if needed even if there are commits from other bots
   gitIgnoredAuthors: [
-    "renovate[bot]@users.noreply.github.com",
     "github-actions[bot]@users.noreply.github.com",
+    "renovate[bot]@users.noreply.github.com",
+    "zebradil[bot]@users.noreply.github.com",
   ],
   packageRules: [
     {
