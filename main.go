@@ -10,6 +10,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/collectors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+
 	"github.com/zebradil/airgradient-exporter/pkg/collector"
 	"github.com/zebradil/airgradient-exporter/pkg/logger"
 )
