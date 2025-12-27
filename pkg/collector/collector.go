@@ -61,7 +61,7 @@ func NewAirGradientCollector(logger *slog.Logger, hosts []string) *AirGradientCo
 		up: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "up"),
 			"Was the last scrape of the AirGradient monitor successful.",
-			[]string{"host"}, nil,
+			[]string{"host", "serialno"}, nil,
 		),
 		pm01: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "pm01"),
@@ -191,17 +191,17 @@ func NewAirGradientCollector(logger *slog.Logger, hosts []string) *AirGradientCo
 		displayBrightness: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "config_display_brightness"),
 			"Display Brightness",
-			[]string{"host", "model"}, nil,
+			[]string{"host", "serialno"}, nil,
 		),
 		ledBarBrightness: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "config_led_bar_brightness"),
 			"LED Bar Brightness",
-			[]string{"host", "model"}, nil,
+			[]string{"host", "serialno"}, nil,
 		),
 		configInfo: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "config_info"),
 			"Configuration Info",
-			[]string{"host", "model", "country", "pm_standard", "led_bar_mode", "temperature_unit"}, nil,
+			[]string{"host", "serialno", "firmware", "model", "country", "pm_standard", "led_bar_mode", "temperature_unit"}, nil,
 		),
 	}
 }
@@ -303,10 +303,10 @@ func (c *AirGradientCollector) scrape(ctx context.Context, host string, ch chan<
 		return
 	}
 
-	configLabels := []string{host, config.Model}
+	configLabels := []string{host, measures.SerialNo}
 	ch <- prometheus.MustNewConstMetric(c.displayBrightness, prometheus.GaugeValue, float64(config.DisplayBrightness), configLabels...)
 	ch <- prometheus.MustNewConstMetric(c.ledBarBrightness, prometheus.GaugeValue, float64(config.LedBarBrightness), configLabels...)
 
-	infoLabels := []string{host, config.Model, config.Country, config.PmStandard, config.LedBarMode, config.TemperatureUnit}
+	infoLabels := []string{host, measures.SerialNo, measures.Firmware, config.Model, config.Country, config.PmStandard, config.LedBarMode, config.TemperatureUnit}
 	ch <- prometheus.MustNewConstMetric(c.configInfo, prometheus.GaugeValue, 1, infoLabels...)
 }
