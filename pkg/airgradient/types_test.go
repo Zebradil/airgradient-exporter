@@ -13,7 +13,7 @@ func TestMeasures_UnmarshalJSON(t *testing.T) {
 		"bootCount": 5,
 		"firmware": "1.0.0",
 		"ledMode": "auto",
-		"model": "TEST"
+		"model": "TEST",
 		"noxIndex": 50,
 		"noxRaw": 150,
 		"pm003Count": 1000.0,
@@ -35,7 +35,7 @@ func TestMeasures_UnmarshalJSON(t *testing.T) {
 		"serialno": "TEST123",
 		"tvocIndex": 100,
 		"tvocRaw": 200,
-		"wifi": -65,
+		"wifi": -65
 	}`
 
 	var measures Measures
@@ -138,11 +138,11 @@ func TestConfig_UnmarshalJSON_WithSLRValue(t *testing.T) {
 func TestMeasures_UnmarshalJSON_Minimal(t *testing.T) {
 	jsonData := `{
 		"firmware": "",
-		"model": ""
+		"model": "",
 		"pm01": 0,
 		"pm02": 0,
 		"pm10": 0,
-		"serialno": "",
+		"serialno": ""
 	}`
 
 	var measures Measures
