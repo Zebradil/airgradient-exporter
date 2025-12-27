@@ -20,37 +20,37 @@ type AirGradientCollector struct {
 	hosts  []string
 	logger *slog.Logger
 
-	up              *prometheus.Desc
-	pm01            *prometheus.Desc
-	pm02            *prometheus.Desc
-	pm10            *prometheus.Desc
-	pm01Standard    *prometheus.Desc
-	pm02Standard    *prometheus.Desc
-	pm10Standard    *prometheus.Desc
-	pm003Count      *prometheus.Desc
-	pm005Count      *prometheus.Desc
-	pm01Count       *prometheus.Desc
-	pm02Count       *prometheus.Desc
-	pm50Count       *prometheus.Desc
-	pm10Count       *prometheus.Desc
-	pm02Compensated *prometheus.Desc
 	atmp            *prometheus.Desc
 	atmpCompensated *prometheus.Desc
-	rhum            *prometheus.Desc
-	rhumCompensated *prometheus.Desc
-	rco2            *prometheus.Desc
-	tvocIndex       *prometheus.Desc
-	tvocRaw         *prometheus.Desc
-	noxIndex        *prometheus.Desc
-	noxRaw          *prometheus.Desc
 	boot            *prometheus.Desc
 	bootCount       *prometheus.Desc
+	noxIndex        *prometheus.Desc
+	noxRaw          *prometheus.Desc
+	pm003Count      *prometheus.Desc
+	pm005Count      *prometheus.Desc
+	pm01            *prometheus.Desc
+	pm01Count       *prometheus.Desc
+	pm01Standard    *prometheus.Desc
+	pm02            *prometheus.Desc
+	pm02Compensated *prometheus.Desc
+	pm02Count       *prometheus.Desc
+	pm02Standard    *prometheus.Desc
+	pm10            *prometheus.Desc
+	pm10Count       *prometheus.Desc
+	pm10Standard    *prometheus.Desc
+	pm50Count       *prometheus.Desc
+	rco2            *prometheus.Desc
+	rhum            *prometheus.Desc
+	rhumCompensated *prometheus.Desc
+	tvocIndex       *prometheus.Desc
+	tvocRaw         *prometheus.Desc
+	up              *prometheus.Desc
 	wifi            *prometheus.Desc
 
 	// Config metrics
+	configInfo        *prometheus.Desc
 	displayBrightness *prometheus.Desc
 	ledBarBrightness  *prometheus.Desc
-	configInfo        *prometheus.Desc
 }
 
 func NewAirGradientCollector(logger *slog.Logger, hosts []string) *AirGradientCollector {
@@ -207,35 +207,39 @@ func NewAirGradientCollector(logger *slog.Logger, hosts []string) *AirGradientCo
 }
 
 func (c *AirGradientCollector) Describe(ch chan<- *prometheus.Desc) {
+	// NOTE: The order of metrics here must match the order in the scrape function.
+
 	ch <- c.up
-	ch <- c.pm01
-	ch <- c.pm02
-	ch <- c.pm10
-	ch <- c.pm01Standard
-	ch <- c.pm02Standard
-	ch <- c.pm10Standard
-	ch <- c.pm003Count
-	ch <- c.pm005Count
-	ch <- c.pm01Count
-	ch <- c.pm02Count
-	ch <- c.pm50Count
-	ch <- c.pm10Count
-	ch <- c.pm02Compensated
+
 	ch <- c.atmp
 	ch <- c.atmpCompensated
-	ch <- c.rhum
-	ch <- c.rhumCompensated
-	ch <- c.rco2
-	ch <- c.tvocIndex
-	ch <- c.tvocRaw
-	ch <- c.noxIndex
-	ch <- c.noxRaw
 	ch <- c.boot
 	ch <- c.bootCount
+	ch <- c.noxIndex
+	ch <- c.noxRaw
+	ch <- c.pm003Count
+	ch <- c.pm005Count
+	ch <- c.pm01
+	ch <- c.pm01Count
+	ch <- c.pm01Standard
+	ch <- c.pm02
+	ch <- c.pm02Compensated
+	ch <- c.pm02Count
+	ch <- c.pm02Standard
+	ch <- c.pm10
+	ch <- c.pm10Count
+	ch <- c.pm10Standard
+	ch <- c.pm50Count
+	ch <- c.rco2
+	ch <- c.rhum
+	ch <- c.rhumCompensated
+	ch <- c.tvocIndex
+	ch <- c.tvocRaw
 	ch <- c.wifi
+
+	ch <- c.configInfo
 	ch <- c.displayBrightness
 	ch <- c.ledBarBrightness
-	ch <- c.configInfo
 }
 
 func (c *AirGradientCollector) Collect(ch chan<- prometheus.Metric) {
@@ -263,37 +267,37 @@ func (c *AirGradientCollector) scrape(ctx context.Context, host string, ch chan<
 	measures, err := c.client.GetMeasures(ctx, host)
 	if err != nil {
 		c.logger.Error("Failed to scrape measures", "host", host, "error", err)
-		ch <- prometheus.MustNewConstMetric(c.up, prometheus.GaugeValue, 0, host)
+		ch <- prometheus.MustNewConstMetric(c.up, prometheus.GaugeValue, 0, host, "")
 		return
 	}
-	ch <- prometheus.MustNewConstMetric(c.up, prometheus.GaugeValue, 1, host)
+	ch <- prometheus.MustNewConstMetric(c.up, prometheus.GaugeValue, 1, host, measures.SerialNo)
 
 	labels := []string{host, measures.SerialNo, measures.Firmware}
 
-	ch <- prometheus.MustNewConstMetric(c.pm01, prometheus.GaugeValue, measures.Pm01, labels...)
-	ch <- prometheus.MustNewConstMetric(c.pm02, prometheus.GaugeValue, measures.Pm02, labels...)
-	ch <- prometheus.MustNewConstMetric(c.pm10, prometheus.GaugeValue, measures.Pm10, labels...)
-	ch <- prometheus.MustNewConstMetric(c.pm01Standard, prometheus.GaugeValue, measures.Pm01Standard, labels...)
-	ch <- prometheus.MustNewConstMetric(c.pm02Standard, prometheus.GaugeValue, measures.Pm02Standard, labels...)
-	ch <- prometheus.MustNewConstMetric(c.pm10Standard, prometheus.GaugeValue, measures.Pm10Standard, labels...)
-	ch <- prometheus.MustNewConstMetric(c.pm003Count, prometheus.GaugeValue, measures.Pm003Count, labels...)
-	ch <- prometheus.MustNewConstMetric(c.pm005Count, prometheus.GaugeValue, measures.Pm005Count, labels...)
-	ch <- prometheus.MustNewConstMetric(c.pm01Count, prometheus.GaugeValue, measures.Pm01Count, labels...)
-	ch <- prometheus.MustNewConstMetric(c.pm02Count, prometheus.GaugeValue, measures.Pm02Count, labels...)
-	ch <- prometheus.MustNewConstMetric(c.pm50Count, prometheus.GaugeValue, measures.Pm50Count, labels...)
-	ch <- prometheus.MustNewConstMetric(c.pm10Count, prometheus.GaugeValue, measures.Pm10Count, labels...)
-	ch <- prometheus.MustNewConstMetric(c.pm02Compensated, prometheus.GaugeValue, measures.Pm02Compensated, labels...)
 	ch <- prometheus.MustNewConstMetric(c.atmp, prometheus.GaugeValue, measures.Atmp, labels...)
 	ch <- prometheus.MustNewConstMetric(c.atmpCompensated, prometheus.GaugeValue, measures.AtmpCompensated, labels...)
-	ch <- prometheus.MustNewConstMetric(c.rhum, prometheus.GaugeValue, measures.Rhum, labels...)
-	ch <- prometheus.MustNewConstMetric(c.rhumCompensated, prometheus.GaugeValue, measures.RhumCompensated, labels...)
-	ch <- prometheus.MustNewConstMetric(c.rco2, prometheus.GaugeValue, measures.Rco2, labels...)
-	ch <- prometheus.MustNewConstMetric(c.tvocIndex, prometheus.GaugeValue, measures.TvocIndex, labels...)
-	ch <- prometheus.MustNewConstMetric(c.tvocRaw, prometheus.GaugeValue, measures.TvocRaw, labels...)
-	ch <- prometheus.MustNewConstMetric(c.noxIndex, prometheus.GaugeValue, measures.NoxIndex, labels...)
-	ch <- prometheus.MustNewConstMetric(c.noxRaw, prometheus.GaugeValue, measures.NoxRaw, labels...)
 	ch <- prometheus.MustNewConstMetric(c.boot, prometheus.GaugeValue, float64(measures.Boot), labels...)
 	ch <- prometheus.MustNewConstMetric(c.bootCount, prometheus.GaugeValue, float64(measures.BootCount), labels...)
+	ch <- prometheus.MustNewConstMetric(c.noxIndex, prometheus.GaugeValue, measures.NoxIndex, labels...)
+	ch <- prometheus.MustNewConstMetric(c.noxRaw, prometheus.GaugeValue, measures.NoxRaw, labels...)
+	ch <- prometheus.MustNewConstMetric(c.pm003Count, prometheus.GaugeValue, measures.Pm003Count, labels...)
+	ch <- prometheus.MustNewConstMetric(c.pm005Count, prometheus.GaugeValue, measures.Pm005Count, labels...)
+	ch <- prometheus.MustNewConstMetric(c.pm01, prometheus.GaugeValue, measures.Pm01, labels...)
+	ch <- prometheus.MustNewConstMetric(c.pm01Count, prometheus.GaugeValue, measures.Pm01Count, labels...)
+	ch <- prometheus.MustNewConstMetric(c.pm01Standard, prometheus.GaugeValue, measures.Pm01Standard, labels...)
+	ch <- prometheus.MustNewConstMetric(c.pm02, prometheus.GaugeValue, measures.Pm02, labels...)
+	ch <- prometheus.MustNewConstMetric(c.pm02Compensated, prometheus.GaugeValue, measures.Pm02Compensated, labels...)
+	ch <- prometheus.MustNewConstMetric(c.pm02Count, prometheus.GaugeValue, measures.Pm02Count, labels...)
+	ch <- prometheus.MustNewConstMetric(c.pm02Standard, prometheus.GaugeValue, measures.Pm02Standard, labels...)
+	ch <- prometheus.MustNewConstMetric(c.pm10, prometheus.GaugeValue, measures.Pm10, labels...)
+	ch <- prometheus.MustNewConstMetric(c.pm10Count, prometheus.GaugeValue, measures.Pm10Count, labels...)
+	ch <- prometheus.MustNewConstMetric(c.pm10Standard, prometheus.GaugeValue, measures.Pm10Standard, labels...)
+	ch <- prometheus.MustNewConstMetric(c.pm50Count, prometheus.GaugeValue, measures.Pm50Count, labels...)
+	ch <- prometheus.MustNewConstMetric(c.rco2, prometheus.GaugeValue, measures.Rco2, labels...)
+	ch <- prometheus.MustNewConstMetric(c.rhum, prometheus.GaugeValue, measures.Rhum, labels...)
+	ch <- prometheus.MustNewConstMetric(c.rhumCompensated, prometheus.GaugeValue, measures.RhumCompensated, labels...)
+	ch <- prometheus.MustNewConstMetric(c.tvocIndex, prometheus.GaugeValue, measures.TvocIndex, labels...)
+	ch <- prometheus.MustNewConstMetric(c.tvocRaw, prometheus.GaugeValue, measures.TvocRaw, labels...)
 	ch <- prometheus.MustNewConstMetric(c.wifi, prometheus.GaugeValue, float64(measures.Wifi), labels...)
 
 	// Fetch Config
@@ -303,10 +307,10 @@ func (c *AirGradientCollector) scrape(ctx context.Context, host string, ch chan<
 		return
 	}
 
+	infoLabels := []string{host, measures.SerialNo, measures.Firmware, config.Model, config.Country, config.PmStandard, config.LedBarMode, config.TemperatureUnit}
+	ch <- prometheus.MustNewConstMetric(c.configInfo, prometheus.GaugeValue, 1, infoLabels...)
+
 	configLabels := []string{host, measures.SerialNo}
 	ch <- prometheus.MustNewConstMetric(c.displayBrightness, prometheus.GaugeValue, float64(config.DisplayBrightness), configLabels...)
 	ch <- prometheus.MustNewConstMetric(c.ledBarBrightness, prometheus.GaugeValue, float64(config.LedBarBrightness), configLabels...)
-
-	infoLabels := []string{host, measures.SerialNo, measures.Firmware, config.Model, config.Country, config.PmStandard, config.LedBarMode, config.TemperatureUnit}
-	ch <- prometheus.MustNewConstMetric(c.configInfo, prometheus.GaugeValue, 1, infoLabels...)
 }

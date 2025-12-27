@@ -7,35 +7,35 @@ import (
 
 func TestMeasures_UnmarshalJSON(t *testing.T) {
 	jsonData := `{
-		"pm01": 10.5,
-		"pm02": 15.3,
-		"pm10": 20.1,
-		"pm01Standard": 11.0,
-		"pm02Standard": 16.0,
-		"pm10Standard": 21.0,
-		"pm003Count": 1000.0,
-		"pm005Count": 2000.0,
-		"pm01Count": 3000.0,
-		"pm02Count": 4000.0,
-		"pm50Count": 5000.0,
-		"pm10Count": 6000.0,
-		"pm02Compensated": 15.5,
 		"atmp": 22.5,
 		"atmpCompensated": 22.7,
-		"rhum": 45.0,
-		"rhumCompensated": 45.2,
-		"rco2": 420,
-		"tvocIndex": 100,
-		"tvocRaw": 200,
-		"noxIndex": 50,
-		"noxRaw": 150,
 		"boot": 12345,
 		"bootCount": 5,
-		"wifi": -65,
-		"ledMode": "auto",
-		"serialno": "TEST123",
 		"firmware": "1.0.0",
+		"ledMode": "auto",
 		"model": "TEST"
+		"noxIndex": 50,
+		"noxRaw": 150,
+		"pm003Count": 1000.0,
+		"pm005Count": 2000.0,
+		"pm01": 10.5,
+		"pm01Count": 3000.0,
+		"pm01Standard": 11.0,
+		"pm02": 15.3,
+		"pm02Compensated": 15.5,
+		"pm02Count": 4000.0,
+		"pm02Standard": 16.0,
+		"pm10": 20.1,
+		"pm10Count": 6000.0,
+		"pm10Standard": 21.0,
+		"pm50Count": 5000.0,
+		"rco2": 420,
+		"rhum": 45.0,
+		"rhumCompensated": 45.2,
+		"serialno": "TEST123",
+		"tvocIndex": 100,
+		"tvocRaw": 200,
+		"wifi": -65,
 	}`
 
 	var measures Measures
@@ -63,23 +63,23 @@ func TestMeasures_UnmarshalJSON(t *testing.T) {
 
 func TestConfig_UnmarshalJSON(t *testing.T) {
 	jsonData := `{
-		"country": "US",
-		"pmStandard": "EPA",
-		"ledBarMode": "auto",
 		"abcDays": 7,
-		"tvocLearningOffset": 100,
-		"noxLearningOffset": 200,
-		"mqttBrokerUrl": "mqtt://example.com",
-		"httpDomain": "example.com",
-		"temperatureUnit": "C",
-		"disableCloudConnection": false,
 		"configurationControl": "local",
-		"postDataToAirGradient": true,
-		"ledBarBrightness": 50,
+		"country": "US",
+		"disableCloudConnection": false,
 		"displayBrightness": 80,
-		"offlineMode": false,
-		"monitorDisplayCompensatedValues": true,
+		"httpDomain": "example.com",
+		"ledBarBrightness": 50,
+		"ledBarMode": "auto",
 		"model": "TEST",
+		"monitorDisplayCompensatedValues": true,
+		"mqttBrokerUrl": "mqtt://example.com",
+		"noxLearningOffset": 200,
+		"offlineMode": false,
+		"pmStandard": "EPA",
+		"postDataToAirGradient": true,
+		"temperatureUnit": "C",
+		"tvocLearningOffset": 100,
 		"corrections": {
 			"pm02": {
 				"correctionAlgorithm": "slr",
@@ -114,8 +114,8 @@ func TestConfig_UnmarshalJSON(t *testing.T) {
 func TestConfig_UnmarshalJSON_WithSLRValue(t *testing.T) {
 	jsonData := `{
 		"country": "US",
-		"pmStandard": "EPA",
 		"model": "TEST",
+		"pmStandard": "EPA",
 		"corrections": {
 			"pm02": {
 				"correctionAlgorithm": "slr",
@@ -137,12 +137,12 @@ func TestConfig_UnmarshalJSON_WithSLRValue(t *testing.T) {
 
 func TestMeasures_UnmarshalJSON_Minimal(t *testing.T) {
 	jsonData := `{
+		"firmware": "",
+		"model": ""
 		"pm01": 0,
 		"pm02": 0,
 		"pm10": 0,
 		"serialno": "",
-		"firmware": "",
-		"model": ""
 	}`
 
 	var measures Measures
