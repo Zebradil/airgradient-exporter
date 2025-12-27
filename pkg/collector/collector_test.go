@@ -52,44 +52,44 @@ func TestAirGradientCollector_Describe(t *testing.T) {
 
 func TestAirGradientCollector_Collect_Success(t *testing.T) {
 	expectedMeasures := &airgradient.Measures{
-		Pm01:            10.5,
-		Pm02:            15.3,
-		Pm10:            20.1,
-		Pm01Standard:    11.0,
-		Pm02Standard:    16.0,
-		Pm10Standard:    21.0,
-		Pm003Count:      1000.0,
-		Pm005Count:      2000.0,
-		Pm01Count:       3000.0,
-		Pm02Count:       4000.0,
-		Pm50Count:       5000.0,
-		Pm10Count:       6000.0,
-		Pm02Compensated: 15.5,
 		Atmp:            22.5,
 		AtmpCompensated: 22.7,
-		Rhum:            45.0,
-		RhumCompensated: 45.2,
-		Rco2:            420,
-		TvocIndex:       100,
-		TvocRaw:         200,
-		NoxIndex:        50,
-		NoxRaw:          150,
 		Boot:            12345,
 		BootCount:       5,
-		Wifi:            -65,
-		SerialNo:        "TEST123",
 		Firmware:        "1.0.0",
 		Model:           "TEST",
+		NoxIndex:        50,
+		NoxRaw:          150,
+		Pm003Count:      1000.0,
+		Pm005Count:      2000.0,
+		Pm01:            10.5,
+		Pm01Count:       3000.0,
+		Pm01Standard:    11.0,
+		Pm02:            15.3,
+		Pm02Compensated: 15.5,
+		Pm02Count:       4000.0,
+		Pm02Standard:    16.0,
+		Pm10:            20.1,
+		Pm10Count:       6000.0,
+		Pm10Standard:    21.0,
+		Pm50Count:       5000.0,
+		Rco2:            420,
+		Rhum:            45.0,
+		RhumCompensated: 45.2,
+		SerialNo:        "TEST123",
+		TvocIndex:       100,
+		TvocRaw:         200,
+		Wifi:            -65,
 	}
 
 	expectedConfig := &airgradient.Config{
 		Country:           "US",
-		PmStandard:        "EPA",
-		LedBarMode:        "auto",
-		TemperatureUnit:   "C",
-		Model:             "TEST",
 		DisplayBrightness: 80,
 		LedBarBrightness:  50,
+		LedBarMode:        "auto",
+		Model:             "TEST",
+		PmStandard:        "EPA",
+		TemperatureUnit:   "C",
 	}
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -192,11 +192,11 @@ func TestAirGradientCollector_Collect_MeasuresError(t *testing.T) {
 
 func TestAirGradientCollector_Collect_ConfigError(t *testing.T) {
 	expectedMeasures := &airgradient.Measures{
+		Firmware: "1.0.0",
+		Model:    "TEST",
 		Pm01:     10.5,
 		Pm02:     15.3,
 		SerialNo: "TEST123",
-		Firmware: "1.0.0",
-		Model:    "TEST",
 	}
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -238,10 +238,10 @@ func TestAirGradientCollector_Collect_MultipleHosts(t *testing.T) {
 		switch r.URL.Path {
 		case "/measures/current":
 			if err := json.NewEncoder(w).Encode(&airgradient.Measures{
-				Pm01:     10.5,
-				SerialNo: "TEST1",
 				Firmware: "1.0.0",
 				Model:    "TEST",
+				Pm01:     10.5,
+				SerialNo: "TEST1",
 			}); err != nil {
 				t.Errorf("Failed to encode measures: %v", err)
 			}
@@ -260,10 +260,10 @@ func TestAirGradientCollector_Collect_MultipleHosts(t *testing.T) {
 		switch r.URL.Path {
 		case "/measures/current":
 			if err := json.NewEncoder(w).Encode(&airgradient.Measures{
-				Pm01:     20.5,
-				SerialNo: "TEST2",
 				Firmware: "1.0.0",
 				Model:    "TEST",
+				Pm01:     20.5,
+				SerialNo: "TEST2",
 			}); err != nil {
 				t.Errorf("Failed to encode measures: %v", err)
 			}

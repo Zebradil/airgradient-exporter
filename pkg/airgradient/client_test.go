@@ -24,17 +24,17 @@ func TestNewClient(t *testing.T) {
 
 func TestClient_GetMeasures_Success(t *testing.T) {
 	expectedMeasures := &Measures{
+		Atmp:      22.5,
+		Boot:      12345,
+		BootCount: 5,
+		Firmware:  "1.0.0",
+		Model:     "TEST",
 		Pm01:      10.5,
 		Pm02:      15.3,
 		Pm10:      20.1,
-		Atmp:      22.5,
-		Rhum:      45.0,
 		Rco2:      420,
+		Rhum:      45.0,
 		SerialNo:  "TEST123",
-		Firmware:  "1.0.0",
-		Model:     "TEST",
-		Boot:      12345,
-		BootCount: 5,
 		Wifi:      -65,
 	}
 
@@ -159,16 +159,16 @@ func TestClient_GetMeasures_ContextCancellation(t *testing.T) {
 
 func TestClient_GetConfig_Success(t *testing.T) {
 	expectedConfig := &Config{
+		AbcDays:                7,
 		Country:                "US",
-		PmStandard:             "EPA",
-		LedBarMode:             "auto",
-		TemperatureUnit:        "C",
-		Model:                  "TEST",
+		DisableCloudConnection: false,
 		DisplayBrightness:      80,
 		LedBarBrightness:       50,
-		AbcDays:                7,
-		DisableCloudConnection: false,
+		LedBarMode:             "auto",
+		Model:                  "TEST",
+		PmStandard:             "EPA",
 		PostDataToAirGradient:  true,
+		TemperatureUnit:        "C",
 	}
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
