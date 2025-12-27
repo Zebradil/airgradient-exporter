@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/Zebradil/airgradient-exporter/compare/1.0.4...1.0.5) (2025-12-27)
+
+
+### Bug Fixes
+
+* use serial number in labels instead of model ([#10](https://github.com/Zebradil/airgradient-exporter/issues/10)) ([7dd421f](https://github.com/Zebradil/airgradient-exporter/commit/7dd421f05f3847a195ceca4edafe8f633bc4c42a))
+
 ## [1.0.4](https://github.com/Zebradil/airgradient-exporter/compare/1.0.3...1.0.4) (2025-12-26)
 
 
