@@ -10,7 +10,7 @@ let
     ../pkg
     ../main.go
   ];
-  baseVersion = "1.0.5";
+  baseVersion = "1.0.6";
   commit = self.shortRev or self.dirtyShortRev or "unknown";
   version = "${baseVersion}-${commit}";
   name = "airgradient-exporter";
@@ -21,7 +21,7 @@ pkgs.buildGoModule {
     root = ./..;
     fileset = sourceFiles;
   };
-  vendorHash = "sha256-iGF2X1c51CSxMGLhP6oeFCulyjZnwNqepWMonAOj0tQ=";
+  vendorHash = "sha256-ECG4pV9xe2uEh/RX/buw5JsZJceHryDSHWCyI2Tm1AM=";
   version = version;
 
   ldflags = [
