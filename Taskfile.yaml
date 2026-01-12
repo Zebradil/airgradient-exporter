@@ -50,3 +50,9 @@ tasks:
     desc: Renders .gorleaser.yml from .goreleaser.ytt.yml
     cmds:
       - ytt -f .goreleaser.ytt.yml > .goreleaser.yml
+
+  dashboard:build:
+    desc: Build the dashboard JSON file
+    cmds:
+      - go run . > dashboard.json
+    dir: dashboard
