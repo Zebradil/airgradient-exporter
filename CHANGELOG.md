@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/Zebradil/airgradient-exporter/compare/1.1.0...1.1.1) (2026-01-12)
+
+
+### Bug Fixes
+
+* **release:** keep generated dashboard in git ([3ddff9b](https://github.com/Zebradil/airgradient-exporter/commit/3ddff9b55a7b36cc8d115fc528b9bf2e5d0250d8))
+
 # [1.1.0](https://github.com/Zebradil/airgradient-exporter/compare/1.0.6...1.1.0) (2026-01-12)
 
 
