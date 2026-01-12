@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/Zebradil/airgradient-exporter/compare/1.0.6...1.1.0) (2026-01-12)
+
+
+### Features
+
+* **dashboard:** add Grafana dashboard for AirGradient metrics ([e58dbad](https://github.com/Zebradil/airgradient-exporter/commit/e58dbad49c47102cd6816d16e51e0d2d14c356b3))
+
 ## [1.0.6](https://github.com/Zebradil/airgradient-exporter/compare/1.0.5...1.0.6) (2026-01-10)
 
 
