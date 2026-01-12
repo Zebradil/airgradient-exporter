@@ -49,8 +49,12 @@
 version: 2
 project_name: #@ project_name
 before:
-  hooks:
+  hooks: #! lang:bash
     - go mod tidy
+    - |
+      cd dashboard \
+        && go mod tidy \
+        && go run main.go > dashboard.json
 builds:
   - binary: #@ project_name
     env:
@@ -58,6 +62,10 @@ builds:
     targets:
       #@ for/end os, arch, arm in targets:
       -  #@ make_target(os, arch, arm)
+release:
+  extra_files:
+    - glob: dashboard/dashboard.json
+      name_template: airgradient-dashboard.json
 archives:
   - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
     format_overrides:

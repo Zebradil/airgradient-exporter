@@ -87,3 +87,36 @@ All metrics are prefixed with `airgradient_`.
 - `airgradient_config_info`: Configuration Info (value is always 1). Labels: `host`, `model`, `country`, `pm_standard`, `led_bar_mode`, `temperature_unit`
 - `airgradient_config_display_brightness`: Display Brightness. Labels: `host`, `model`
 - `airgradient_config_led_bar_brightness`: LED Bar Brightness. Labels: `host`, `model`
+
+## Grafana Dashboard
+
+A pre-built Grafana dashboard is available for visualizing AirGradient metrics. The dashboard includes:
+
+- **Current Status Panels**: Real-time stat panels showing current values for temperature, humidity, CO2, PM metrics, TVOC, and NOx
+- **Time Series Panels**: Historical graphs for all metrics with thresholds and legends
+- **Multi-Sensor Support**: Variable-based filtering by sensor serial number
+- **Color-Coded Thresholds**: Visual indicators for temperature, humidity, CO2, TVOC, and NOx based on health thresholds
+
+### Installation
+
+1. Download the dashboard JSON file from the [latest release](https://github.com/zebradil/airgradient-exporter/releases/latest) (look for `airgradient-dashboard.json`)
+2. In Grafana, go to **Dashboards** → **Import**
+3. Upload the JSON file or paste its contents
+4. Select your Prometheus data source
+5. Click **Import**
+
+The dashboard will automatically discover all AirGradient sensors via the `serialno` variable and allow you to filter by one or more sensors.
+
+### Building from Source
+
+If you want to build the dashboard yourself or customize it:
+
+```bash
+cd dashboard
+# Adjust the code in dashboard.go as needed
+# ...
+# Generate the dashboard JSON
+go run . > dashboard.json
+```
+
+The dashboard source code is located in the [`dashboard/`](dashboard/) directory.
