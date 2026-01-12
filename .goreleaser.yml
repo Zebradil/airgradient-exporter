@@ -3,10 +3,7 @@ project_name: airgradient-exporter
 before:
   hooks:
   - go mod tidy
-  - |
-    cd dashboard \
-      && go mod tidy \
-      && go run main.go > dashboard.json
+  - go -C dashboard mod tidy && go -C dashboard run . > dashboard.json
 builds:
 - binary: airgradient-exporter
   env:
