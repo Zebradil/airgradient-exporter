@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/Zebradil/airgradient-exporter/compare/1.1.1...1.2.0) (2026-01-15)
+
+
+### Features
+
+* **release:** enable upx compression for linux and windows binaries ([c8b9645](https://github.com/Zebradil/airgradient-exporter/commit/c8b9645ff35b2fa831cc7af7beed0401d967b13a))
+
 ## [1.1.1](https://github.com/Zebradil/airgradient-exporter/compare/1.1.0...1.1.1) (2026-01-12)
 
 
