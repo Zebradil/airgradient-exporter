@@ -10,6 +10,12 @@ builds:
   targets:
   - linux_amd64
   - linux_arm64
+upx:
+- enabled: true
+  goos:
+  - linux
+  - windows
+  lzma: true
 release:
   extra_files:
   - glob: dashboard/dashboard.json
