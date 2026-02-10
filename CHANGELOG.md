@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/Zebradil/airgradient-exporter/compare/1.2.0...1.2.1) (2026-02-10)
+
+
+### Bug Fixes
+
+* **deps:** update module golang.org/x/term to v0.40.0 ([#19](https://github.com/Zebradil/airgradient-exporter/issues/19)) ([1389d39](https://github.com/Zebradil/airgradient-exporter/commit/1389d391fc4e56285052cb7c7b376d32d36ec5ea))
+
 # [1.2.0](https://github.com/Zebradil/airgradient-exporter/compare/1.1.1...1.2.0) (2026-01-15)
 
 
