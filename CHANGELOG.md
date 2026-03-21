@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/Zebradil/airgradient-exporter/compare/1.2.3...1.2.4) (2026-03-21)
+
+
+### Bug Fixes
+
+* **dashboard:** rebuild with newer sdk ([959d1b7](https://github.com/Zebradil/airgradient-exporter/commit/959d1b7bb9058a11e6d31f51ae5c8a6f3eacbe6b))
+
 ## [1.2.3](https://github.com/Zebradil/airgradient-exporter/compare/1.2.2...1.2.3) (2026-03-21)
 
 
