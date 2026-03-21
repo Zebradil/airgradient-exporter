@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/Zebradil/airgradient-exporter/compare/1.2.2...1.2.3) (2026-03-21)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/grafana/grafana-foundation-sdk/go to v0.0.12 ([#18](https://github.com/Zebradil/airgradient-exporter/issues/18)) ([947e41e](https://github.com/Zebradil/airgradient-exporter/commit/947e41e238169c4d02a14647cdb39742e8e58f58))
+
 ## [1.2.2](https://github.com/Zebradil/airgradient-exporter/compare/1.2.1...1.2.2) (2026-03-11)
 
 
